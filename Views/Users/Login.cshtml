@@ -1,0 +1,27 @@
+﻿@{
+    ViewData["Title"] = "Login Page";
+}
+
+<p>
+    <a asp-action="Register">New User? Register here</a>
+</p>
+
+
+
+<form asp-action="Login">
+    <div>
+        <label>Username:</label>
+        <input type="text" name="username" required />
+    </div>
+    <div>
+        <label>Password:</label>
+        <input type="password" name="password" required />
+    </div>
+    <button type="submit">Login</button>
+</form>
+@if (!ViewData.ModelState.IsValid)
+{
+    <div>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    </div>
+}

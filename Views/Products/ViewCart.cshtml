@@ -1,0 +1,62 @@
+﻿@model List<Ecommerce_App_prac1.Models.Cart>
+@{
+    var currentcurrency = ViewContext.HttpContext.Session.GetString("Currency");
+    var totalCartString = ViewContext.HttpContext.Session.GetString("TotalCart");
+    var totalCart = decimal.TryParse(totalCartString, out var result) ? result : 0;
+}
+
+<h1>Shopping Cart</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Product Name</th>
+            <th>Quantity</th>
+            <th>Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.ProductName</td>
+                <td>@item.Quantity</td>
+                <td>@item.Price @currentcurrency</td>
+            </tr>
+        }
+        <h1></h1>
+    </tbody>
+</table>
+<table class="table">
+    <tr>
+            <td>
+                <h2>Total will be: @totalCart @currentcurrency</h2>
+            </td>
+            <td>
+                <h2>
+                <form asp-action="ProceedtoPay">
+                <button class="btn btn-success">Proceed to Pay</button>
+                </form>
+                </h2>
+            </td>
+            <td>
+            <h2>
+                <form asp-action="Index">
+                    <button class="btn btn-danger" onclick="return confirmGoBack()">Go Back</button>
+                </form>
+            </h2>
+            </td>
+    </tr>
+</table>
+
+<script>
+    function confirmGoBack() {
+        var result = confirm("Are you sure you want to go back?");
+        if (result) {
+            // If confirmed, redirect to the Index action
+            window.location.href = '@Url.Action("Index", "Products")';
+        }
+        // If canceled, do nothing (stay on the page)
+        return false;
+    }
+</script>

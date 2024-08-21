@@ -1,0 +1,56 @@
+﻿@model IEnumerable<Ecommerce_App_prac1.Models.Product>
+@{
+    var currentcurrency = ViewContext.HttpContext.Session.GetString("Currency");
+    }
+
+
+@{
+    ViewData["Title"] = "Index";
+    
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+    <a asp-action="ConverttoINR">Convert to INR</a>
+    <a asp-action="ConverttoUSD">Convert to USD</a>
+    <a asp-action="ViewCart" target="_blank">View Cart</a>
+</p>
+<form asp-action="AddToCart">
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Description</th>
+            <th>Stock</th>
+            <th>Quantity</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.OrderBy(item => item.Price))
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Price @currentcurrency</td>
+                <td>@item.Description</td>
+                <td>@item.Stock</td>
+                <td>
+                    <input type="number" name="quantities[@item.ProductId]" min="0" max="@item.Stock" />
+                    <a asp-action="Edit" asp-route-id="@item.ProductId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.ProductId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ProductId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<button type="submit" class="btn btn-primary">Submit and go to Cart</button>
+    @if (TempData["Warning"] != null)
+    {
+        <script type="text/javascript">
+            alert('@TempData["Warning"]');
+        </script>
+    }
+</form>
